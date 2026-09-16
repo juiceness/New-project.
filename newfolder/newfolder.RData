@@ -7,7 +7,7 @@
  mulAge = johnAge * joshuaAge
  mulAge 
 
-  
+ divAge = johnAge / joshuaAge
  
  
 
