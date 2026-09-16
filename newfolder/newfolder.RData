@@ -1,13 +1,15 @@
- johnAge <- 10
- joshuaAge <- 20
- 
- addAge = johnAge + joshuaAge
- addAge
- 
- mulAge = johnAge * joshuaAge
- mulAge 
+johnAge <- 10
+joshuaAge <- 20
 
- divAge = johnAge / joshuaAge
- 
- 
+addAge = johnAge + joshuaAge
+addAge
+
+mulAge = johnAge * joshuaAge
+mulAge 
+
+divAge = johnAge / joshuaAge
+divAge
+
+minAge = johnAge - joshuaAge
+minAge
 
