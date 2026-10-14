@@ -84,14 +84,12 @@ Question #4: Is typeof() ever different from class() and from mode() for the sam
 # Then check its type with typeof(), class(), and mode()
 
 ```{r}
-num_string <- 123
-as.numeric(num_string)
+num_string <- "123"
+num <- as.numeric(num_string)
 
-
-typeof(num_string)
-class(num_string)   
-mode(num_string)  
-
+typeof(num)
+class(num)
+mode(num)
 ```
 # TODO: Convert the number 0 and the number 1 to logical using as.logical()
 # What do you get?
