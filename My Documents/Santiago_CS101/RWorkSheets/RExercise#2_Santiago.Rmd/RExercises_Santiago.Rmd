@@ -202,20 +202,3 @@ Conclusion
 In 3–4 sentences, summarize what you learned about how R handles different data types, and why understanding typeof()/class() and conversion functions matters before doing arithmetic or combining data.
 
 #answer:In this lab I learned that R stores every value as a specific type (numeric, integer, character, logical, or complex), and that `typeof()`, `class()`, and `mode()` show how a value is stored and how R treats it. Functions like `as.numeric()` and `as.logical()` convert between types, but conversion can fail and return `NA` with a warning, while `paste0()` converts numbers to text automatically and `+` refuses to mix text and numbers. Checking types and converting explicitly before doing arithmetic or combining data matters because data that looks numeric may actually be text, which causes errors or silently wrong results. Reading warnings and verifying types keeps problems visible at the source instead of letting them spread through an analysis.
-
-
-
-
----
-title: "Exercise 2"
-author: "Joshua John E. Santiago"
-date: "2026-09-30"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```[r]
-```
