@@ -1,0 +1,150 @@
+---
+title: "Exercise 7"
+author: "Joshua John E. Santiago"
+date: "2026-11-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#RLab: Data Structures - Data Frames
+
+#Part A — Creating Data Frames
+
+#Question #1
+```{r}
+# Part a: check that all six vectors have the same length
+Respondent <- c(1:20)
+Sex <- c(2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2)
+FathersOccupation <- c(1, 3, 3, 3, 1, 2, 3, 1, 1, 1, 3, 2, 1, 3, 3, 1, 3, 1, 2, 1)
+PersonsAtHome <- c(5, 7, 3, 8, 5, 9, 6, 7, 8, 4, 7, 5, 4, 7, 8, 8, 3, 11, 7, 6)
+SiblingsAtSchool <- c(6, 4, 4, 1, 2, 1, 5, 3, 1, 2, 3, 2, 5, 5, 2, 1, 2, 5, 3, 2)
+TypesOfHouses <- c(1, 2, 3, 1, 1, 3, 3, 1, 2, 3, 2, 3, 2, 2, 3, 3, 3, 3, 3, 2)
+
+c(length(Respondent), length(Sex), length(FathersOccupation),
+  length(PersonsAtHome), length(SiblingsAtSchool), length(TypesOfHouses))
+```
+
+```{r}
+# Combine all six into a data frame
+survey <- data.frame(Respondent = Respondent,
+                     Sex = Sex,
+                     FathersOccupation = FathersOccupation,
+                     PersonsAtHome = PersonsAtHome,
+                     SiblingsAtSchool = SiblingsAtSchool,
+                     TypesOfHouses = TypesOfHouses)
+print(survey)
+```
+
+```{r}
+# Part a: structure and summary
+str(survey)
+summary(survey)
+```
+
+```{r}
+# Part b: dimensions
+dim(survey)
+nrow(survey)
+ncol(survey)
+```
+
+```{r}
+# Part c: factors (stored in separate objects so survey stays numeric)
+sex_f <- factor(survey$Sex, levels = c(1, 2), labels = c("Male", "Female"))
+father_f <- factor(survey$FathersOccupation, levels = c(1, 2, 3),
+                   labels = c("Farmer", "Driver", "Others"))
+house_f <- factor(survey$TypesOfHouses, levels = c(1, 2, 3),
+                  labels = c("Wood", "Semi-Concrete", "Concrete"))
+
+table(sex_f)
+table(father_f)
+table(house_f)
+```
+
+```{r}
+# Part d: mean of all columns
+colMeans(survey)
+```
+
+```{r}
+# Part e: first five rows, all columns
+survey[1:5, ]
+```
+
+```{r}
+# Part f: select TypesOfHouses and store it as types_houses
+types_houses <- survey$TypesOfHouses
+types_houses
+```
+
+```{r}
+# Part g: male respondents whose father was a farmer
+survey[survey$Sex == 1 & survey$FathersOccupation == 1, ]
+```
+
+```{r}
+# Part h: female respondents with 5 or more siblings in school
+survey[survey$Sex == 2 & survey$SiblingsAtSchool >= 5, ]
+```
+
+#Question #2
+```{r}
+# Answer: Every row is one respondent, so every column has to have an answer
+# for the same 20 people. If one vector is shorter, the answers would shift
+# and get matched to the wrong respondent. data.frame() would also give an
+# error about differing number of rows.
+```
+
+#Question #3
+```{r}
+# Answer: Sex, FathersOccupation, and TypesOfHouses are categories (nominal
+# data), because the numbers are just codes. PersonsAtHome and SiblingsAtSchool
+# are real counts. Respondent is only an ID number. Averaging Sex would be
+# misleading because 1 and 2 are not amounts, so a mean of 1.85 does not mean
+# anything.
+```
+
+#Question #4
+```{r}
+survey[survey$Sex == 1, ]
+
+# Answer: The output only shows rows with a 1 in Sex. Someone who has not seen
+# the legend would not know that 1 means Male, so they could think it means
+# Female or something else. This shows that coded data is hard to read until
+# it is labeled, and it is easy to misread it.
+```
+
+#Question #5
+```{r}
+nrow(survey[survey$Sex == 1, ])
+sum(survey$Sex == 1)
+
+# Answer: There are 3 males out of 20 respondents. This sample is small and
+# has very few males, so I would not be confident generalizing any pattern to
+# a larger population. A pattern from only 3 people could easily be random.
+```
+
+#Question #6
+```{r}
+summary(survey)
+
+# Answer: R does not know the columns are categories because they are stored
+# as plain numbers, so it treats them like any other numeric column. The
+# meaning of the numbers only comes from the legend, which R does not have.
+# So how data is stored (numeric) is different from what it means
+# (categories). To fix this, I need to turn them into factors.
+```
+
+#Question #7
+```{r}
+mean(survey$PersonsAtHome)
+mean(survey$Sex)
+
+# Answer: The mean of PersonsAtHome (6.4) is meaningful because it is a real
+# count, so it means the average household has about 6 persons. The mean of
+# Sex (1.85) is not meaningful because Sex is a category. It only shows that
+# most respondents are coded 2, which is better shown with a count or table.
+```

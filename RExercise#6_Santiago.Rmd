@@ -1,0 +1,220 @@
+---
+title: "Exercise 6"
+author: "Joshua John E. Santiago"
+date: "2026-11-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#R Lab: Data Structures - Data Frames
+#Part A — Creating Data Frames
+```{r}
+name <- c("Ana", "Ben", "Cid", "Dex", "Eli")
+age <- c(20, 21, 19, 22, 20)
+passed <- c(TRUE, TRUE, FALSE, TRUE, FALSE)
+```
+
+```{r}
+students <- data.frame(name = name, age = age, passed = passed)
+print(students)
+```
+
+```{r}
+typeof(students$name)
+class(students$name)
+```
+
+```{r}
+courses <- data.frame(
+  course_code = c("IS101", "IS102", "IS103"),
+  units = c(3, 3, 2),
+  instructor = c("Dr. P. Reyes", "Dr. R. Santos", "Dr. S. Cruz")
+)
+print(courses)
+```
+
+#Question #1
+```{r}
+# Answer: A data frame is a table, so every column has to have the same number
+# of rows. If one column is shorter, some cells would be empty and the table
+# would not be a proper rectangle. R gives an error like: arguments imply
+# differing number of rows: 5, 4.
+```
+
+#Question #2
+```{r}
+# Answer: A data frame is built like a list, where each element is a column.
+# A list can hold different types in different elements, so each column can
+# have its own type. But each column is a vector, and a vector can only hold
+# one type, so a single column cannot mix types.
+```
+
+#Part B — Subsetting Data Frames
+```{r}
+students$age
+students[["age"]]
+students["age"]
+```
+
+```{r}
+students[2, ]
+```
+
+```{r}
+students[3, "name"]
+```
+
+```{r}
+students[students$passed == TRUE, ]
+```
+
+```{r}
+students[students$passed == TRUE & students$age > 19, ]
+```
+
+#Question #3
+```{r}
+class(students$age)
+class(students["age"])
+
+# Answer: students$age gives numeric, which is just the plain vector of ages.
+# students["age"] gives data.frame, so it is still a small table with one
+# column. This is like lists, where single brackets keep the container and
+# double brackets (or $) pull out the actual content inside.
+```
+
+#Question #4
+```{r}
+# Answer: The & operator compares the two logical vectors position by position.
+# A row is TRUE only if both conditions are TRUE for that row, and then R keeps
+# only the TRUE rows. If I used | (OR) instead, a row would be kept when at
+# least one condition is TRUE, so I would get more rows. In this data, Eli
+# would be added because Eli is older than 19 even though Eli did not pass.
+```
+
+#Part C — Data Frame Properties
+```{r}
+str(students)
+```
+
+```{r}
+dim(students)
+nrow(students)
+ncol(students)
+```
+
+```{r}
+names(students)
+```
+
+```{r}
+summary(students)
+```
+
+#Question #5
+```{r}
+# Answer: For age (numeric), summary gives the min, 1st quartile, median, mean,
+# 3rd quartile, and max. For passed (logical), it just counts how many are
+# FALSE and how many are TRUE. For name (character), it only shows the length,
+# class, and mode. A mean does not make sense for name because names are text,
+# and you cannot add up or average text.
+```
+
+#Question #6
+```{r}
+# Answer: str() is more useful when I want to see the structure, like the data
+# type of each column and a preview of the values. This helps when checking if
+# the data was read in correctly. summary() is more useful when I want the
+# actual statistics, like the mean and median, or how many are TRUE or FALSE.
+```
+#Part D — Data Frame Operations
+```{r}
+# Add year_level column
+students$year_level <- c(2, 3, 1, 4, 2)
+print(students)
+```
+
+```{r}
+# Remove the passed column
+students$passed <- NULL
+print(students)
+```
+
+```{r}
+# Sort by age, ascending
+students[order(students$age), ]
+```
+
+```{r}
+# Sort by age, descending
+students[order(students$age, decreasing = TRUE), ]
+```
+
+#Question #7
+```{r}
+students[students$passed == TRUE, ]
+
+# Answer: No, the filter does not work anymore. Since the passed column is
+# gone, students$passed gives NULL, and NULL == TRUE gives an empty logical
+# vector. R does not show an error, it just returns a data frame with 0 rows.
+# This is why I need to keep track of what the data frame looks like after
+# each step, because the code can run without errors but give a useless
+# result.
+```
+
+#Question #8
+```{r}
+order(students$age)
+
+# Answer: order(students$age) gives the row positions arranged from the
+# smallest age to the largest, which is 3 1 5 2 4 here. Then
+# students[that vector, ] reads it as "take row 3 first, then row 1, then row
+# 5, then 2, then 4". Since the column part is left empty, R takes all the
+# columns for each of those rows, so the whole rows move together and not
+# just age.
+```
+
+#Part E — Critical Thinking Challenge
+```{r}
+grades <- data.frame(
+  name = c("Ana", "Ben", "Cid", "Dex", "Eli"),
+  midterm = c(85, 78, 92, 88, 70),
+  final = c(90, 82, 95, 84, 75)
+)
+
+# Add the average column
+grades$average <- (grades$midterm + grades$final) / 2
+
+# The lab uses a remarks column, so I made one. I assumed below 75 is Failed.
+grades$remarks <- ifelse(grades$average < 75, "Failed", "Passed")
+print(grades)
+```
+
+```{r}
+# Only the Failed rows, showing name and average
+grades[grades$remarks == "Failed", c("name", "average")]
+```
+
+#Question #9
+```{r}
+# Answer: First I would add a new column for the change from midterm to final,
+# like grades$change <- grades$final - grades$midterm. Then I would sort the
+# data by change using order() to see who dropped the most. After that I would
+# filter the Failed rows and look at both columns. If most of the failed
+# students have a big negative change, the drop is the main factor. If they
+# have a low midterm but a normal change, then the low midterm is the main
+# factor.
+```
+
+#Conclusion
+```{r}
+# Answer: A data frame is a table where each column is a vector, and all the
+# columns have the same length. It is like a list of equal length vectors,
+# which is why each column can have a different type but each column itself
+# has only one type. It is the main structure for real data because most
+# real datasets, like student records or sales, are tables with different
+# kinds of information in each column. It also makes it easy to filter, sort,
+# and add columns.
+```
